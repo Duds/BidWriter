@@ -12,7 +12,7 @@ Automate the tedious process of writing bids and responding to Request for Tende
 - **Export Options**: Export the final draft in multiple formats like PDF, Word etc.
 
 ## Tech Stack
-- Python Notebook for development and testing
+- Jupyter Notebook for development and testing
 - MongoDB for database storage
 - OpenAI LLM API for text generation
 - Express.js for optional web interface
@@ -31,5 +31,5 @@ Automate the tedious process of writing bids and responding to Request for Tende
 - Create a new Pull Request
 
 ## License
-MIT License
+Unlicense
 
