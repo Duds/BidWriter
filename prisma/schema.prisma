@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and user management
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
+  name      String?
+  role      String    @default("USER") // Example: "USER", "ADMIN"
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Project model for managing projects
+model Project {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  documents   Document[] // Relationship to documents
+  templates   Template[] // Relationship to templates
+  outputs     Output[]   // Relationship to outputs
+}
+
+// Document model for RFP documents
+model Document {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  path      String
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Template model for proposal templates
+model Template {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  content   String
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Output model for generated proposals
+model Output {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  content   String
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// OpenAI API Key model for managing API keys
+model OpenAIApiKey {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  key       String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
